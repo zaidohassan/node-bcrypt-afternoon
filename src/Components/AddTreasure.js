@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import axios from "axios";
 
 export default class AddTreasure extends Component {
   constructor() {
     super();
     this.state = {
-      treasureURL: '',
+      treasureURL: ""
     };
   }
 
@@ -14,6 +15,20 @@ export default class AddTreasure extends Component {
 
   addTreasure() {
     // post to /api/treasure/user here
+    axios
+      .post("/api/treasure/user", {
+        image_url: this.state.treasureURL
+      })
+      .then(res => {
+        this.props.addMyTreasure(res.data);
+        this.setState({
+          treasureURL: ""
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error.response.request.response);
+      });
   }
 
   render() {
